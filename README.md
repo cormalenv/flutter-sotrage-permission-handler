@@ -4,17 +4,23 @@
 
 A permissions plugin for Flutter. This plugin provides a cross-platform (iOS, Android) API to request and check permissions.
 
-Branch  | Build Status 
-------- | ------------
-develop | [![Build Status](https://app.bitrise.io/app/fa4f5d4bf452bcfb/status.svg?token=HorGpL_AOw2llYz39CjmdQ&branch=develop)](https://app.bitrise.io/app/fa4f5d4bf452bcfb)
-master  | [![Build Status](https://app.bitrise.io/app/fa4f5d4bf452bcfb/status.svg?token=HorGpL_AOw2llYz39CjmdQ&branch=master)](https://app.bitrise.io/app/fa4f5d4bf452bcfb)
+| Branch  | Build Status                                                                                                                                                       |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| develop | [![Build Status](https://app.bitrise.io/app/fa4f5d4bf452bcfb/status.svg?token=HorGpL_AOw2llYz39CjmdQ&branch=develop)](https://app.bitrise.io/app/fa4f5d4bf452bcfb) |
+| master  | [![Build Status](https://app.bitrise.io/app/fa4f5d4bf452bcfb/status.svg?token=HorGpL_AOw2llYz39CjmdQ&branch=master)](https://app.bitrise.io/app/fa4f5d4bf452bcfb)  |
+
+## NOTE
+
+This is a fork from the original plugin [permission_handler](https://github.com/Baseflow/flutter-permission-handler). To avoid the [issue](https://github.com/BaseflowIT/flutter-permission-handler/issues/26) with Apple Store asking you to include all permission options when you want to submit your App, I have removed all the permissions but the **storage** one.
+
+So, use this plugin just to get storage permissions to your app.
 
 ## Features
 
-* Check if a permission is granted.
-* Request permission for a specific feature.
-* Open app settings so the user can enable a permission.
-* Show a rationale for requesting permission (Android).
+- Check if a permission is granted.
+- Request permission for a specific feature.
+- Open app settings so the user can enable a permission.
+- Show a rationale for requesting permission (Android).
 
 ## Usage
 
@@ -22,29 +28,31 @@ To use this plugin, add `permission_handler` as a [dependency in your pubspec.ya
 
 ```yaml
 dependencies:
-  permission_handler: '^4.0.0'
+  permission_handler: "^4.0.0"
 ```
 
-> **NOTE:** As of version 3.1.0 the permission_handler plugin switched to the AndroidX version of the Android Support Libraries. This means you need to make sure your Android project is also upgraded to support AndroidX. Detailed instructions can be found [here](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility). 
+> **NOTE:** As of version 3.1.0 the permission_handler plugin switched to the AndroidX version of the Android Support Libraries. This means you need to make sure your Android project is also upgraded to support AndroidX. Detailed instructions can be found [here](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility).
 >
->The TL;DR version is:
+> The TL;DR version is:
 >
->1. Add the following to your "gradle.properties" file:
+> 1.  Add the following to your "gradle.properties" file:
 >
->```
->android.useAndroidX=true
->android.enableJetifier=true
->```
->2. Make sure you set the `compileSdkVersion` in your "android/app/build.gradle" file to 28:
+> ```
+> android.useAndroidX=true
+> android.enableJetifier=true
+> ```
 >
->```
->android {
+> 2.  Make sure you set the `compileSdkVersion` in your "android/app/build.gradle" file to 28:
+>
+> ```
+> android {
 >  compileSdkVersion 28
 >
 >  ...
->}
->```
->3. Make sure you replace all the `android.` dependencies to their AndroidX counterparts (a full list can be found here: https://developer.android.com/jetpack/androidx/migrate).
+> }
+> ```
+>
+> 3.  Make sure you replace all the `android.` dependencies to their AndroidX counterparts (a full list can be found here: https://developer.android.com/jetpack/androidx/migrate).
 
 ### Android and iOS specific permissions
 
@@ -53,7 +61,7 @@ For this plugin to work you will have to add permission configuration to your `A
 - [AndroidManifest.xml](https://github.com/BaseflowIT/flutter-permission-handler/blob/develop/example/android/app/src/main/AndroidManifest.xml) (note that there is a debug, main and profile version which are used depending on how you start your App. In general it is sufficient to add permissions only to the `main` version);
 - [Info.plist](https://github.com/BaseflowIT/flutter-permission-handler/blob/develop/example/ios/Runner/Info.plist)
 
-> IMPORTANT: On iOS you will have to include all permission options when you want to submit your App. This is because the `permission_handler` plugin touches all different SDKs and because the static code analyser (run by Apple upon App submission) detects this and will assert if it cannot find a matching permission option in the `Info.plist`. More information about this can be found [here](https://github.com/BaseflowIT/flutter-permission-handler/issues/26). Unfortunately we don't have a good solution for this.    
+> IMPORTANT: On iOS you will have to include all permission options when you want to submit your App. This is because the `permission_handler` plugin touches all different SDKs and because the static code analyser (run by Apple upon App submission) detects this and will assert if it cannot find a matching permission option in the `Info.plist`. More information about this can be found [here](https://github.com/BaseflowIT/flutter-permission-handler/issues/26). Unfortunately we don't have a good solution for this.
 
 ## API
 
