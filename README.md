@@ -1,6 +1,6 @@
 # Flutter Permission handler Plugin
 
-[![pub package](https://img.shields.io/pub/v/permission_handler.svg)](https://pub.dartlang.org/packages/permission_handler)
+[![pub package](https://img.shields.io/pub/v/storage_permissions.svg)](https://pub.dartlang.org/packages/storage_permissions)
 
 A permissions plugin for Flutter. This plugin provides a cross-platform (iOS, Android) API to request and check permissions.
 
@@ -11,7 +11,7 @@ A permissions plugin for Flutter. This plugin provides a cross-platform (iOS, An
 
 ## NOTE
 
-This is a fork from the original plugin [permission_handler](https://github.com/Baseflow/flutter-permission-handler). To avoid the [issue](https://github.com/BaseflowIT/flutter-permission-handler/issues/26) with Apple Store asking you to include all permission options when you want to submit your App, I have removed all the permissions but the **storage** one.
+This is a fork from the original plugin [storage_permissions](https://github.com/Baseflow/flutter-permission-handler). To avoid the [issue](https://github.com/BaseflowIT/flutter-permission-handler/issues/26) with Apple Store asking you to include all permission options when you want to submit your App, I have removed all the permissions but the **storage** one.
 
 So, use this plugin just to get storage permissions to your app.
 
@@ -24,14 +24,14 @@ So, use this plugin just to get storage permissions to your app.
 
 ## Usage
 
-To use this plugin, add `permission_handler` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/). For example:
+To use this plugin, add `storage_permissions` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/). For example:
 
 ```yaml
 dependencies:
-  permission_handler: "^4.0.0"
+  storage_permissions: "^4.0.0"
 ```
 
-> **NOTE:** As of version 3.1.0 the permission_handler plugin switched to the AndroidX version of the Android Support Libraries. This means you need to make sure your Android project is also upgraded to support AndroidX. Detailed instructions can be found [here](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility).
+> **NOTE:** As of version 3.1.0 the storage_permissions plugin switched to the AndroidX version of the Android Support Libraries. This means you need to make sure your Android project is also upgraded to support AndroidX. Detailed instructions can be found [here](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility).
 >
 > The TL;DR version is:
 >
@@ -61,14 +61,14 @@ For this plugin to work you will have to add permission configuration to your `A
 - [AndroidManifest.xml](https://github.com/BaseflowIT/flutter-permission-handler/blob/develop/example/android/app/src/main/AndroidManifest.xml) (note that there is a debug, main and profile version which are used depending on how you start your App. In general it is sufficient to add permissions only to the `main` version);
 - [Info.plist](https://github.com/BaseflowIT/flutter-permission-handler/blob/develop/example/ios/Runner/Info.plist)
 
-> IMPORTANT: On iOS you will have to include all permission options when you want to submit your App. This is because the `permission_handler` plugin touches all different SDKs and because the static code analyser (run by Apple upon App submission) detects this and will assert if it cannot find a matching permission option in the `Info.plist`. More information about this can be found [here](https://github.com/BaseflowIT/flutter-permission-handler/issues/26). Unfortunately we don't have a good solution for this.
+> IMPORTANT: On iOS you will have to include all permission options when you want to submit your App. This is because the `storage_permissions` plugin touches all different SDKs and because the static code analyser (run by Apple upon App submission) detects this and will assert if it cannot find a matching permission option in the `Info.plist`. More information about this can be found [here](https://github.com/BaseflowIT/flutter-permission-handler/issues/26). Unfortunately we don't have a good solution for this.
 
 ## API
 
 ### Requesting permission
 
 ```dart
-import 'package:permission_handler/permission_handler.dart';
+import 'package:storage_permissions/storage_permissions.dart';
 
 Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.contacts]);
 ```
@@ -76,7 +76,7 @@ Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().r
 ### Checking permission
 
 ```dart
-import 'package:permission_handler/permission_handler.dart';
+import 'package:storage_permissions/storage_permissions.dart';
 
 PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.contacts);
 ```
@@ -84,7 +84,7 @@ PermissionStatus permission = await PermissionHandler().checkPermissionStatus(Pe
 ### Checking service status
 
 ```dart
-import 'package:permission_handler/permission_handler.dart';
+import 'package:storage_permissions/storage_permissions.dart';
 
 ServiceStatus serviceStatus = await PermissionHandler().checkServiceStatus(PermissionGroup.location);
 ```
@@ -94,7 +94,7 @@ Checking the service status only makes sense for the `PermissionGroup.location` 
 ### Open app settings
 
 ```dart
-import 'package:permission_handler/permission_handler.dart';
+import 'package:storage_permissions/storage_permissions.dart';
 
 bool isOpened = await PermissionHandler().openAppSettings();
 ```
@@ -102,7 +102,7 @@ bool isOpened = await PermissionHandler().openAppSettings();
 ### Show a rationale for requesting permission (Android only)
 
 ```dart
-import 'package:permission_handler/permission_handler.dart';
+import 'package:storage_permissions/storage_permissions.dart';
 
 bool isShown = await PermissionHandler().shouldShowRequestPermissionRationale(PermissionGroup.contacts);
 ```

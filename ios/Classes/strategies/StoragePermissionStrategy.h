@@ -1,6 +1,6 @@
 //
 //  StoragePermissionStrategy.h
-//  permission_handler
+//  storage_permissions
 //
 //  Created by Frank Gregor on 06.11.19.
 //

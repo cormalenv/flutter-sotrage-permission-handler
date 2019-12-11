@@ -1,4 +1,4 @@
-name: permission_handler
+name: storage_permissions
 description: Storage permission plugin for Flutter. This plugin provides a cross-platform (iOS, Android) API to request and check storage  permissions.
 version: 4.0.1
 authors:

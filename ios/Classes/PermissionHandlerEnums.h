@@ -1,6 +1,6 @@
 //
 //  PermissionHandlerEnums.h
-//  permission_handler
+//  storage_permissions
 //
 //  Created by Razvan Lung on 15/02/2019.
 //

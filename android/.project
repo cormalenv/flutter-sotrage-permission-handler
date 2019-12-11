@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>permission_handler</name>
-	<comment>Project permission_handler created by Buildship.</comment>
+	<name>storage_permissions</name>
+	<comment>Project storage_permissions created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
