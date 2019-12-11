@@ -1,69 +1,51 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 import 'package:storage_permissions/src/permission_enums.dart';
-import 'package:storage_permissions/src/utils/codec.dart';
 
 /// Provides a cross-platform (iOS, Android) API to request and check permissions.
-class PermissionHandler {
-  factory PermissionHandler() {
+class StoragePermissions {
+  factory StoragePermissions() {
     if (_instance == null) {
       const MethodChannel methodChannel =
           MethodChannel('flutter.baseflow.com/permissions/methods');
 
-      _instance = PermissionHandler.private(methodChannel);
+      _instance = StoragePermissions.private(methodChannel);
     }
     return _instance;
   }
 
   @visibleForTesting
-  PermissionHandler.private(this._methodChannel);
+  StoragePermissions.private(this._methodChannel);
 
-  static PermissionHandler _instance;
+  static StoragePermissions _instance;
 
   final MethodChannel _methodChannel;
 
   /// Check current permission status.
   ///
-  /// Returns a [Future] containing the current permission status for the supplied [PermissionGroup].
+  /// Returns a [Future] containing the current permission status for the supplied [StoragePermissionLevel].
   Future<PermissionStatus> checkPermissionStatus(
-      PermissionGroup permission) async {
-    final int status = await _methodChannel.invokeMethod(
-        'checkPermissionStatus', permission.value);
+      {StoragePermissionLevel level =
+          StoragePermissionLevel.location}) async {
+    final int status =
+    await _methodChannel.invokeMethod('checkPermissionStatus', level.index);
 
-    return Codec.decodePermissionStatus(status);
+    return PermissionStatus.values[status];
   }
 
   /// Check current service status.
   ///
-  /// Returns a [Future] containing the current service status for the supplied [PermissionGroup].
-  ///
-  /// Notes about specific PermissionGroups:
-  /// - **PermissionGroup.phone**
-  ///   - Android:
-  ///     - The method will return [ServiceStatus.notApplicable] when:
-  ///       1. the device lacks the TELEPHONY feature
-  ///       1. TelephonyManager.getPhoneType() returns PHONE_TYPE_NONE
-  ///       1. when no Intents can be resolved to handle the `tel:` scheme
-  ///     - The method will return [ServiceStatus.disabled] when:
-  ///       1. the SIM card is missing
-  ///   - iOS:
-  ///     - The method will return [ServiceStatus.notApplicable] when:
-  ///       1. the native code can not find a handler for the `tel:` scheme
-  ///     - The method will return [ServiceStatus.disabled] when:
-  ///       1. the mobile network code (MNC) is either 0 or 65535. See
-  ///          https://stackoverflow.com/a/11595365 for details
-  ///   - **PLEASE NOTE that this is still not a perfect indication** of the
-  ///     devices' capability to place & connect phone calls
-  ///     as it also depends on the network condition.
-  Future<ServiceStatus> checkServiceStatus(PermissionGroup permission) async {
-    final int status = await _methodChannel.invokeMethod(
-        'checkServiceStatus', permission.value);
+  /// Returns a [Future] containing the current service status for the supplied [LocationPermissionLevel].
+  Future<ServiceStatus> checkServiceStatus(
+      {StoragePermissionLevel level =
+          StoragePermissionLevel.location}) async {
+    final int status =
+    await _methodChannel.invokeMethod('checkServiceStatus', level.index);
 
-    return Codec.decodeServiceStatus(status);
+    return ServiceStatus.values[status];
   }
 
   /// Open the App settings page.
@@ -75,16 +57,16 @@ class PermissionHandler {
     return hasOpened;
   }
 
-  /// Request the user for access to the supplied list of permissiongroups.
+  /// Request the user for access to the location services.
   ///
-  /// Returns a [Map] containing the status per requested permissiongroup.
-  Future<Map<PermissionGroup, PermissionStatus>> requestPermissions(
-      List<PermissionGroup> permissions) async {
-    final List<int> data = Codec.encodePermissionGroups(permissions);
-    final Map<dynamic, dynamic> status =
-        await _methodChannel.invokeMethod('requestPermissions', data);
+  /// Returns a [Future<PermissionStatus>] containing the permission status.
+  Future<PermissionStatus> requestPermissions(
+      {StoragePermissionLevel permissionLevel =
+          StoragePermissionLevel.location}) async {
+    final int status = await _methodChannel.invokeMethod(
+        'requestPermission', permissionLevel.index);
 
-    return Codec.decodePermissionRequestResult(Map<int, int>.from(status));
+    return PermissionStatus.values[status];
   }
 
   /// Request to see if you should show a rationale for requesting permission.
@@ -92,13 +74,14 @@ class PermissionHandler {
   /// This method is only implemented on Android, calling this on iOS always
   /// returns [false].
   Future<bool> shouldShowRequestPermissionRationale(
-      PermissionGroup permission) async {
+      {StoragePermissionLevel permissionLevel =
+          StoragePermissionLevel.location}) async {
     if (!Platform.isAndroid) {
       return false;
     }
 
     final bool shouldShowRationale = await _methodChannel.invokeMethod(
-        'shouldShowRequestPermissionRationale', permission.value);
+        'shouldShowRequestPermissionRationale', permissionLevel.index);
 
     return shouldShowRationale;
   }
